@@ -1,41 +1,33 @@
 # TODO in the session store the infos so that we can access it
 
-
 from pymongo import MongoClient
-
-
-from flask import Flask, redirect, url_for, session, request
+from flask import Flask, redirect, url_for, request, redirect, render_template, session
 from authlib.integrations.flask_client import OAuth
-
+from functools import wraps
 import json
 from os import environ as env
 from urllib.parse import quote_plus, urlencode
-
 from authlib.integrations.flask_client import OAuth
 from dotenv import find_dotenv, load_dotenv
-from flask import Flask, redirect, render_template, session, url_for
 from functools import wraps
-import json
 from six.moves.urllib.request import urlopen
-from functools import wraps
 from flask_cors import cross_origin
+import db
+from routes.crud_user import user_bp
+from routes.crud_qns import qns_route
 
 
+# ENV setup
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
 
-client = MongoClient("mongodb://localhost:27017/")  # your connection string
-db = client["mydatabase"]
-users_collection = db["users"]
-
-
 app = Flask(__name__)
 
-app.secret_key = env.get("APP_SECRET_KEY")
 
-print(app.secret_key)
+# AUTH-0 setup
+app.secret_key = env.get("APP_SECRET_KEY")
 oauth = OAuth(app)
 
 oauth.register(
@@ -47,9 +39,6 @@ oauth.register(
     },
     server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration',
 )
-
-from functools import wraps
-from flask import redirect, url_for, session
 
 
 def requires_auth(f):
@@ -77,7 +66,11 @@ def requires_admin(f):
 
     return decorated
 
+app.register_blueprint(user_bp)
+app.register_blueprint(qns_route)
 
+
+#test admin/auth routes
 @app.route("/dashboard")
 @requires_auth
 @requires_admin
