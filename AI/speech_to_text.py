@@ -1,9 +1,21 @@
 import assemblyai as aai
+from dotenv import load_dotenv
+import os
 
-aai.settings.api_key = "9330f89a343a4fafa0b3305c7442b085"
-transcriber = aai.Transcriber()
+load_dotenv()
 
-transcript = transcriber.transcribe(
-    "New Recording.m4a"
-)
-print(transcript.text)
+# SET FILE PATH
+file_path = "New Recording.m4a"
+
+
+def speech_to_text(file_path):
+    aai.settings.api_key = os.getenv("SPEECH_TO_TEXT_KEY")
+    config = aai.TranscriptionConfig(auto_highlights=True)
+    transcriber = aai.Transcriber()
+    transcript = transcriber.transcribe(file_path, config=config)
+    return transcript.text
+
+
+print(speech_to_text(file_path))
+# for result in transcript.auto_highlights.results:
+#     print(f"Highlight: {result.text}, Count: {result.count}, Rank: {result.rank}")
