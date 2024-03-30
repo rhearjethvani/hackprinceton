@@ -6,21 +6,6 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_KEY"))
 
 
-
-completion = client.chat.completions.create(
-    model="gpt-3.5-turbo",
-    messages=[
-        {
-            "role": "system",
-            "content":"Given the job description, generate {questions} relevant behavioral questions. Make sure you provide exactly {questions} questions.Ensure that the questions are directly related to the job role described and return the response as a list (array) of questions. Example Output: ['Qn1','Qn2',...] Job Description: {job_description}",
-        },
-    ],
-)
-
-
-qns=completion.choices[0].message.content
-for item in qns.split("\n")[1:]:
-    print(item)
 questions=2
 job_description = """
 About the job
@@ -57,3 +42,48 @@ It would be great if you also had:
 Banking/ Financial experience.
 
 """
+def generate_job_questions(questions,number):
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {
+                "role": "system",
+                "content": "Given the job description, generate {questions} relevant behavioral questions. Make sure you provide exactly {questions} questions.Ensure that the questions are directly related to the job role described and return the response as a list (array) of questions. Example Output: ['Qn1','Qn2',...] Job Description: {job_description}",
+            },
+        ],
+    )
+    qns = completion.choices[0].message.content
+    return qns
+
+
+def generate_education_questions(content, number):
+    # Prompt for generating questions for verbal answers
+    completion_verbal = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {
+                "role": "system",
+                "content": f"Based on the content provided below, generate 1 question that should be answered verbally by the students. The question should assess their understanding of the material. Content: {content}",
+            },
+        ],
+    )
+    qns_verbal = completion_verbal.choices[0].message.content
+    return qns_verbal
+
+print(generate_job_questions(questions, 2))
+# print(
+#     generate_education_questions(
+#         """Princeton University, located in Princeton, New Jersey, is one of the oldest and most prestigious universities in the United States. Founded in 1746 as the College of New Jersey, it was later renamed Princeton University in 1896. Princeton is renowned for its commitment to excellence in teaching and research across a wide range of disciplines.
+
+# The university's picturesque campus spans over 500 acres and features a unique blend of historic and modern architecture. Notable landmarks include Nassau Hall, the university's oldest building, which served as the capital of the United States for a brief period during the Revolutionary War.
+
+# Princeton University is consistently ranked among the top universities in the world. Its academic programs are renowned for their rigor and innovation, attracting talented students and faculty from around the globe. The university offers undergraduate and graduate programs in the arts and humanities, social sciences, natural sciences, engineering, and more.
+
+# Beyond academics, Princeton offers a vibrant campus life with numerous student organizations, cultural events, and athletic teams. The university is a member of the Ivy League, known for its competitive athletics and rich tradition.
+
+# With a commitment to service and leadership, Princeton University prepares students to make a positive impact on the world. Its alumni include Nobel laureates, Rhodes Scholars, Supreme Court justices, and leaders in various fields, making Princeton a beacon of intellectual excellence and innovation.
+
+# """,
+#         10,
+#     )
+# )

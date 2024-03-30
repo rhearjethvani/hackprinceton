@@ -5,7 +5,8 @@ import os
 load_dotenv()
 
 # SET FILE PATH
-file_path = "New Recording.m4a"
+# file_path = "New Recording.m4a"
+file_path="IMG_2680 2.MOV"
 
 
 def speech_to_text(file_path):
@@ -14,7 +15,6 @@ def speech_to_text(file_path):
     transcriber = aai.Transcriber()
     transcript = transcriber.transcribe(file_path, config=config)
     return transcript.text
-
 
 print(speech_to_text(file_path))
 # for result in transcript.auto_highlights.results:

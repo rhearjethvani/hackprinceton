@@ -1,3 +1,12 @@
-# Stephen 
-# write a function in python that takes the text as a parameter which returns if the text is plagarized or not 
-# for doing this use zeroGPT article 
+from gptzero import GPTZeroAPI
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+def find_ai_human(document):
+    api_key = os.getenv("ZERO_AI")
+    gptzero_api = GPTZeroAPI(api_key)
+    response = gptzero_api.text_predict(document)
+    clx = response.get("documents")[0].get("predicted_class")
+    return clx
