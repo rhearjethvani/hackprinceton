@@ -15,7 +15,7 @@ from flask_cors import cross_origin
 import db
 from routes.crud_user import user_bp
 from routes.crud_qns import qns_route
-
+from auth.auth import requires_auth,requires_admin
 
 # ENV setup
 ENV_FILE = find_dotenv()
@@ -40,31 +40,6 @@ oauth.register(
     server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration',
 )
 
-
-def requires_auth(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        if "user" not in session:
-            return redirect(url_for("login"))
-        return f(*args, **kwargs)
-
-    return decorated
-
-
-# Decorator to check if user is an admin
-def requires_admin(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        if "user" not in session:
-            return redirect(url_for("login"))
-        user_info = session.get("role")
-        print(user_info)
-        if user_info and user_info == "admin":
-            return f(*args, **kwargs)
-        else:
-            return "Access denied. Admin privileges required."
-
-    return decorated
 
 app.register_blueprint(user_bp)
 app.register_blueprint(qns_route)
@@ -96,6 +71,7 @@ def home():
 def callback():
     token = oauth.auth0.authorize_access_token()
     session["user"] = token
+    print(token)
     session["role"]="admin"
     return redirect("/")
 
