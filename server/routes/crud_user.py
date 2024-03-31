@@ -1,31 +1,37 @@
-from flask import Blueprint, jsonify,request
+from flask import Blueprint, jsonify, request, session
 from models.user import User
 import db
+
 # from app import requires_admin,requires_auth
-from auth.auth import requires_admin,requires_auth
+from auth.auth import requires_admin, requires_auth
 
 user_bp = Blueprint("user", __name__)
 
 
 @user_bp.route("/users")
+@requires_auth
+@requires_admin
 def get_users():
-    # if you are an admin you can see other users
-    pass
+    user_data = session.get("user").get("userinfo")
+    email = user_data.get("email")
+    user = db.users_collection.find({email})
+    
+    return user.people 
 
 
 # if the user is not in the database
 @user_bp.route("/create", methods=["POST"])
-# @requires_auth
+@requires_auth
 def create_user():
-    user_data = request.json
-    print(user_data)
-    username = user_data.get("username")
+    # you should do here also the session stuff
+    user_data = session.get("user").get("userinfo")
+    username = user_data.get("name")
     email = user_data.get("email")
-    password = user_data.get("password")
-    is_admin = True if user_data.get("is_admin")=="True" else False
+    password = user_data.get("email")
+    is_admin = True # manual stuff for now
 
     # Create a User object
-    user_obj = User(username, is_admin , email, password)
+    user_obj = User(username, is_admin, email, password)
 
     # Insert the user object into MongoDB
     result = db.users_collection.insert_one(
@@ -36,7 +42,6 @@ def create_user():
             "is_admin": user_obj.is_admin,
         }
     )
-    print(result)
 
     # Check if the insertion was successful
     if result.inserted_id:

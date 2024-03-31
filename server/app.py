@@ -71,6 +71,7 @@ def home():
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
     token = oauth.auth0.authorize_access_token()
+    print(token)
     session["user"] = token
     # print(token)
     session["role"]="admin"

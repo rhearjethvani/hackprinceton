@@ -50,12 +50,12 @@ def submit_video():
 
         # Get user email
         user_email = session.get("user").get("userinfo").get("email")
+        user=db.users_collection.find_one({"email":user_email})
 
         # Update user's latest test result in the database
         db.users_collection.update_one(
-            {"email": user_email, "people.tests.is_completed": False},
-            {"$set": {"people.$[elem].tests.$[test_elem].is_completed": True}},
-            array_filters=[{"elem.tests.is_completed": False}, {"test_elem.is_completed": False}],
+            {user},
+            {"$set": {user.is_completed: True,user.has_passed:passed}},
         )
 
 

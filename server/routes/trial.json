@@ -1,113 +1,26 @@
 {
-    'version': '2024-03-28',
-    'scanId': 'f1a2ef31-0b5b-453c-bcbc-88a201c19777',
-    'documents': [{
-            'average_generated_prob': 0,
-            'class_probabilities': {
-                'ai': 0.046112322263622725,
-                'human': 0.9536866649976518,
-                'mixed': 0.0002010127387254696
-            },
-            'completely_generated_prob': 0.046112322263622725,
-            'confidence_category': 'high',
-            'confidence_score': 0.9536866649976518,
-            'confidence_scores_raw': {
-                'identity': {
-                    'ai': 0.046112322263622725,
-                    'human': 0.9536866649976518,
-                    'mixed': 0.0002010127387254696
-                }
-            },
-            'confidence_thresholds_raw': {
-                'identity': {
-                    'ai': {
-                        'low': 0.8,
-                        'medium': 0.9,
-                        'reject': 0.7
-                    },
-                    'human': {
-                        'low': 0.75,
-                        'medium': 0.85,
-                        'reject': 0.65
-                    },
-                    'mixed': {
-                        'low': 0.8,
-                        'medium': 0.9,
-                        'reject': 0.7
-                    }
-                }
-            },
-            'metrics_per_class': {},
-            'overall_burstiness': 30.274930953979492,
-            'paragraphs': [{
-                'completely_generated_prob': 3.0024051513069735e-07,
-                'num_sentences': 8,
-                'start_sentence_index': 0
-            }],
-            'predicted_class': 'human',
-            'sentences': [{
-                    'generated_prob': 0.177406445145607,
-                    'perplexity': 101,
-                    'sentence': "Virat Kohli (Hindi pronunciation: [u1'ɾa:ʈ 'ko:ɦli] ⓘ; born 5 November 1988) is an Indian international cricketer and the former captain of the Indian national cricket team.",
-                    'highlight_sentence_for_ai': False
-                },
-                {
-                    'generated_prob': 0.1421307921409607,
-                    'perplexity': 21,
-                    'sentence': 'He is a right-handed batsman and an occasional medium-fast bowler.',
-                    'highlight_sentence_for_ai': False
-                },
-                {
-                    'generated_prob': 0.12298312783241272,
-                    'perplexity': 58,
-                    'sentence': 'He currently represents Royal Challengers Bengaluru in the IPL and Delhi in domestic cricket.',
-                    'highlight_sentence_for_ai': False
-                },
-                {
-                    'generated_prob': 0.15442046523094177,
-                    'perplexity': 10,
-                    'sentence': 'Kohli is widely regarded as one of the greatest batsmen of all time.',
-                    'highlight_sentence_for_ai': False
-                },
-                {
-                    'generated_prob': 0.15940158069133759,
-                    'perplexity': 23,
-                    'sentence': '[
-                    3
-                ] He holds the record as the highest run - scorer in T20I and IPL, ranks third in ODI, and stands as the fourth - highest in international cricket.
-                ', '
-                highlight_sentence_for_ai ': False
-            },
-            {
-                'generated_prob': 0.15243063867092133,
-                'perplexity': 29,
-                'sentence': '[
-                4
-            ] He also holds the record
-            for scoring the most centuries in ODI cricket and stands second in the list of most international centuries scored.
-            ', '
-            highlight_sentence_for_ai ': False
-        },
-        {
-            'generated_prob': 0.13904985785484314,
-            'perplexity': 22,
-            'sentence': 'Kohli was a member of the Indian team that won the 2011 Cricket World Cup,
-            2013 ICC Champions Trophy,
-            and captained India to win the ICC Test mace three consecutive times in 2017,
-            2018,
-            and 2019. ', '
-            highlight_sentence_for_ai ': False
-        },
-        {
-            'generated_prob': 0.15648241341114044,
-            'perplexity': 16,
-            'sentence': '[
-            5
-        ]
-        ', '
-        highlight_sentence_for_ai ': False
+    'access_token': 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiaXNzIjoiaHR0cHM6Ly9kZXYtem0yNzgyN3lvbWNzam4xbC51cy5hdXRoMC5jb20vIn0..RLjZFR__hrZDscg2.pVqIK2JIVDQHU4n8ftPq8PuEH4ZMQmdfIgTwvIeQYp_n5x4DWS31YemuenSevDG2JOj8WKwdqF6qROPECy-qprWeZm9IgUVOfOZq85c1wy1eJ99cMgOQwiGSNWM5lgpBvlkOZUoE29H1TwAU5AEFoukjZYAT27uAO5NMmqY3iMOnXdWMti-0LrFuYutdsAQ78gK6evCGSXlryy8p39zafRkih8zxJMwELNaKCdI1kFzAEJ2e7B24ET2o2MErazTMUl8Zu9M4gnejPfIhAuneyrtRxDw8DtZX5HvAR_yWPlokejgHm68TsFqA5MTfAlebhP-LSjgAN20rglUgNYSiJLGnQEdn77Q.GG1dYv_wXcNQlxv5abRDag',
+    'id_token': 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImhrMzN0NjdfcEdWbWhGOFlyLXdDVyJ9.eyJnaXZlbl9uYW1lIjoiU2FmYWwiLCJmYW1pbHlfbmFtZSI6IkdhdXRhbSIsIm5pY2tuYW1lIjoic2VlcmFtMzYzNiIsIm5hbWUiOiJTYWZhbCBHYXV0YW0iLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSjhEWDZYX3dOYm9LcUlTM1lMaXl5SUdNMVVNaENocUJIRUd1d2loLTMtYkVFPXM5Ni1jIiwibG9jYWxlIjoiZW4iLCJ1cGRhdGVkX2F0IjoiMjAyNC0wMy0zMVQwMToyMTozNS42NDBaIiwiZW1haWwiOiJzZWVyYW0zNjM2QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc3MiOiJodHRwczovL2Rldi16bTI3ODI3eW9tY3NqbjFsLnVzLmF1dGgwLmNvbS8iLCJhdWQiOiJrS3hKZVBuY1pobkw0dUlWeEQ2OGp4OUExQkRFOE0zbSIsImlhdCI6MTcxMTg0ODA5NiwiZXhwIjoxNzExODg0MDk2LCJzdWIiOiJnb29nbGUtb2F1dGgyfDEwNjg0OTg1MTkyODgwOTE4NzQwMCIsInNpZCI6IlNkVmpwSDU4YVJycVRGRVF2ZGFneEhsbktJWlNFUHctIiwibm9uY2UiOiJ6N0xoYVFHVFlrVUg1ZHN1NVVFRSJ9.Zpe1pH26BDYzla2R21Q-yeJVg8XhUKi92k3been9vo8ON8PQfxtmcHdpcBm1z3VRpYGV5xKvnjfBqRtp7LDHJTpI-cfgs8X5Ti5fFOhWLcpcaOnUomZSNxAyJM2J6nO77iHxfVf0eCuoC3Z9UCLLb57LnJPCesUfDjclZ3HAqxkaCBnkuUzgpGrj9AW2I7eLwIo4g3dsIw0Wa5UEcWExhRGI6whOfiICy4zv3TSOIp8In2enlnELVLIQb24k1PMo15aWPGPBAFsl8RmPEnaPvXUlEkf5JKtx5ffCoUZFlNxOOggXqOPNhypxWnAxAIjzJKX4cU6Tem3UtQILa3lhzw',
+    'scope': 'openid profile email',
+    'expires_in': 86400,
+    'token_type': 'Bearer',
+    'expires_at': 1711934496,
+    'userinfo': {
+        'given_name': 'Safal',
+        'family_name': 'Gautam',
+        'nickname': 'seeram3636',
+        'name': 'Safal Gautam',
+        'picture': 'https: //lh3.googleusercontent.com/a/ACg8ocJ8DX6X_wNboKqIS3YLiyyIGM1UMhChqBHEGuwih-3-bEE=s96-c',
+        'locale': 'en',
+        'updated_at': '2024-03-31T01:21:35.640Z',
+        'email': 'seeram3636@gmail.com',
+        'email_verified': True,
+        'iss': 'https://dev-zm27827yomcsjn1l.us.auth0.com/',
+        'aud': 'kKxJePncZhnL4uIVxD68jx9A1BDE8M3m',
+        'iat': 1711848096,
+        'exp': 1711884096,
+        'sub': 'google-oauth2|106849851928809187400',
+        'sid': 'SdVjpH58aRrqTFEQvdagxHlnKIZSEPw-',
+        'nonce': 'z7LhaQGTYkUH5dsu5UEE'
     }
-], 'writing_stats': {}, 'result_message': 'Our detector is highly confident that the text is written entirely by a human.', 'result_sub_message': '', 'document_classification': 'HUMAN_ONLY', 'version': '2024-03-28', 'language': 'en'
-}
-], 'editorDocumentId': None
 }
