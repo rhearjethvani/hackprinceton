@@ -1,99 +1,158 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Record and Save Video</title>
+</head>
+<body>
+<div>
+  <button type="button" id="buttonStart">Start</button>
+  <button type="button" id="buttonStop" disabled>Stop</button>
+</div>
+<div>
+  <video autoplay muted playsinline id="videoLive"></video>
+</div>
+<div>
+  <video controls playsinline id="videoRecorded"></video>
+</div>
+<script>
+  async function main() {
+    const buttonStart = document.querySelector('#buttonStart');
+    const buttonStop = document.querySelector('#buttonStop');
+    const videoLive = document.querySelector('#videoLive');
+    const videoRecorded = document.querySelector('#videoRecorded');
+    let recordedChunks = [];
+
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
+
+    videoLive.srcObject = stream;
+
+    if (!MediaRecorder.isTypeSupported('video/webm')) {
+      console.warn('video/webm is not supported');
+    }
+
+    const mediaRecorder = new MediaRecorder(stream, {
+      mimeType: 'video/webm',
+    });
+
+    buttonStart.addEventListener('click', () => {
+      mediaRecorder.start();
+      buttonStart.setAttribute('disabled', '');
+      buttonStop.removeAttribute('disabled');
+    });
+
+    buttonStop.addEventListener('click', () => {
+      mediaRecorder.stop();
+      buttonStart.removeAttribute('disabled');
+      buttonStop.setAttribute('disabled', '');
+    });
+
+    mediaRecorder.addEventListener('dataavailable', event => {
+      recordedChunks.push(event.data);
+      videoRecorded.src = URL.createObjectURL(event.data);
+    });
+
+    mediaRecorder.addEventListener('stop', () => {
+      const blob = new Blob(recordedChunks, { type: 'video/webm' });
+      const formData = new FormData();
+      formData.append('video', blob, 'recorded_video.webm');
+
+      fetch('/save_video', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => console.log('Video saved:', data))
+      .catch(error => console.error('Error saving video:', error));
+
+      recordedChunks = [];
+    });
+  }
+
+  main();
+</script>
+</body>
+</html> -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Record Video and Audio</title>
-    <style>
-      .container {
-        text-align: center;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Record and Save Video</title>
+</head>
+<body>
+<div>
+  <button type="button" id="buttonStart">Start</button>
+  <button type="button" id="buttonStop" disabled>Stop</button>
+</div>
+<div>
+  <video autoplay muted playsinline id="videoLive"></video>
+</div>
+<div>
+  <video controls playsinline id="videoRecorded"></video>
+</div>
+<script>
+  async function main() {
+    const buttonStart = document.querySelector('#buttonStart');
+    const buttonStop = document.querySelector('#buttonStop');
+    const videoLive = document.querySelector('#videoLive');
+    const videoRecorded = document.querySelector('#videoRecorded');
+    let recordedChunks = [];
 
-      video {
-        width: 100%;
-        max-width: 600px;
-        margin-bottom: 20px;
-      }
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
 
-      .record-button,
-      .stop-button,
-      .play-button {
-        padding: 10px 20px;
-        font-size: 16px;
-        margin: 0 10px;
-      }
+    videoLive.srcObject = stream;
 
-      .stop-button,
-      .play-button {
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <video id="video" autoplay></video>
-      <button id="recordButton" class="record-button">Record</button>
-      <button id="stopButton" class="stop-button" disabled>Stop</button>
-      <button id="playButton" class="play-button" disabled>Play</button>
-    </div>
-    <script>
-      const videoElement = document.getElementById("video");
-      const recordButton = document.getElementById("recordButton");
-      const stopButton = document.getElementById("stopButton");
-      const playButton = document.getElementById("playButton");
+    if (!MediaRecorder.isTypeSupported('video/webm')) {
+      console.warn('video/webm is not supported');
+    }
 
-      let mediaRecorder;
-      let recordedChunks = [];
+    const mediaRecorder = new MediaRecorder(stream, {
+      mimeType: 'video/webm',
+    });
 
-      recordButton.addEventListener("click", startRecording);
-      stopButton.addEventListener("click", stopRecording);
-      playButton.addEventListener("click", playRecording);
+    buttonStart.addEventListener('click', () => {
+      mediaRecorder.start();
+      buttonStart.setAttribute('disabled', '');
+      buttonStop.removeAttribute('disabled');
+    });
 
-      async function startRecording() {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true,
-          });
-          videoElement.srcObject = stream;
-          mediaRecorder = new MediaRecorder(stream);
+    buttonStop.addEventListener('click', () => {
+      mediaRecorder.stop();
+      buttonStart.removeAttribute('disabled');
+      buttonStop.setAttribute('disabled', '');
+    });
 
-          mediaRecorder.ondataavailable = function (event) {
-            recordedChunks.push(event.data);
-          };
+    mediaRecorder.addEventListener('dataavailable', event => {
+      recordedChunks.push(event.data);
+      videoRecorded.src = URL.createObjectURL(event.data);
+    });
 
-          mediaRecorder.onstop = function () {
-            const blob = new Blob(recordedChunks, { type: "video/webm" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "recording.webm";
-            document.body.appendChild(a);
-            a.click();
-            recordedChunks = [];
-          };
+    mediaRecorder.addEventListener('stop', () => {
+      const blob = new Blob(recordedChunks, { type: 'video/webm' });
+      const formData = new FormData();
+      formData.append('video', blob, 'recorded_video.webm');
 
-          recordButton.style.display = "none";
-          stopButton.style.display = "inline-block";
-        } catch (err) {
-          console.error("Error accessing media devices: ", err);
-        }
-      }
+      fetch('/save_video', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => console.log('Video saved:', data))
+      .catch(error => console.error('Error saving video:', error));
 
-      function stopRecording() {
-        mediaRecorder.stop();
-        recordButton.style.display = "inline-block";
-        stopButton.style.display = "none";
-        playButton.style.display = "inline-block";
-      }
+      recordedChunks = [];
+    });
+  }
 
-      function playRecording() {
-        const superBuffer = new Blob(recordedChunks, { type: "video/webm" });
-        videoElement.src = null;
-        videoElement.srcObject = null;
-        videoElement.src = window.URL.createObjectURL(superBuffer);
-        videoElement.play();
-      }
-    </script>
-  </body>
+  main();
+</script>
+</body>
 </html>

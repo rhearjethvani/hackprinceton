@@ -26,11 +26,13 @@ qns_route = Blueprint("questions", __name__)
 @qns_route.route("/submit-video", methods=["POST"])
 # @requires_auth
 def submit_video():
+    print("This is working....")
     # Check if the request contains files
     if "file" not in request.files:
         return jsonify({"error": "No file part"})
-
+    print("This is working....")
     file = request.files["file"]
+    print(file)
 
     # Check if the file name is empty
     if file.filename == "":
@@ -43,7 +45,10 @@ def submit_video():
             qns_route.root_path, "../videos", filename
         )  # Assuming 'movie' is the directory name
         file.save(file_path)
+        print(filename)
+        print(file_path)
         text = speech_to_text(file_path)
+        print(text)
         # generate text
         ai_human = find_ai_human(text)
         passed = "human" in ai_human
@@ -143,23 +148,23 @@ def submit_video():
 #     else:
 #         return render_template("addquestion.html")
 
-    # # hiring manager
-    # else:
-    #     # number=getfrom the html
-    #     number=request.data.number
-    #     questions = generate_job_questions(text,int(number))
-    #     questions=questions.split("\n")
-    #     t = Test(False, questions)
-    #     result = db.users_collection.find_one({"email": created_by})
-    #     if result:
-    #         for item in result.people:
-    #             item.tests.append(t)
-    #         db.users_collection.update_one(
-    #             {"email": created_by}, {"$set": {"people": result.people}}
-    #         )
+# # hiring manager
+# else:
+#     # number=getfrom the html
+#     number=request.data.number
+#     questions = generate_job_questions(text,int(number))
+#     questions=questions.split("\n")
+#     t = Test(False, questions)
+#     result = db.users_collection.find_one({"email": created_by})
+#     if result:
+#         for item in result.people:
+#             item.tests.append(t)
+#         db.users_collection.update_one(
+#             {"email": created_by}, {"$set": {"people": result.people}}
+#         )
 
-    #     return "<h1>This is education {question} portal<h1>"
-    # if the person is admin then only he will be able to create questions
-    # fetch the content from the frontend and send to the backend
-    # professor adds the content and based on that it will generate the question
-    # user to transfer qns to all the associated users for the specific company or the team
+#     return "<h1>This is education {question} portal<h1>"
+# if the person is admin then only he will be able to create questions
+# fetch the content from the frontend and send to the backend
+# professor adds the content and based on that it will generate the question
+# user to transfer qns to all the associated users for the specific company or the team

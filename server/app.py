@@ -1,7 +1,10 @@
 # TODO in the session store the infos so that we can access it
 
+# from AI.speech_to_text import speech_to_text
+# from AI.zerogpt import find_ai_human
+
 from pymongo import MongoClient
-from flask import Flask, redirect, url_for, request, redirect, render_template, session
+from flask import Flask, redirect, url_for, request, redirect, render_template, session,jsonify
 from authlib.integrations.flask_client import OAuth
 from functools import wraps
 import json
@@ -19,8 +22,14 @@ from auth.auth import requires_auth,requires_admin
 import os
 from flask import Flask, render_template, request, redirect, url_for
 from routes.crud_user import create_user,get_users
+import sys, os
 
-from AI import *
+from server.models.test import Test
+
+sys.path.append(os.path.abspath("../"))
+from AI.zerogpt import find_ai_human
+from AI.speech_to_text import speech_to_text
+
 # ENV setup
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -75,8 +84,7 @@ def home():
         "home.html",
         session=session,
         users=users,
-        l=len(users)
-        ,
+        l=len(users),
         pretty=json.dumps(session.get("user"), indent=4),
     )
 
@@ -121,21 +129,40 @@ def logout():
 def index():
     return render_template("indexCopy.html")
 
-UPLOAD_FOLDER = "uploads"
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
+@app.route("/save_video", methods=["POST"])
+@requires_auth
+def save_video():
+    try:
+        video_file = request.files["video"]
+        video_file.save("./videos/recorded_video.webm")
 
-@app.route("/upload", methods=["POST"])
-def upload_file():
-    if "file" not in request.files:
-        return redirect(request.url)
-    file = request.files["file"]
-    if file.filename == "":
-        return redirect(request.url)
-    if file:
-        filename = file.filename
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-        return redirect(url_for("index"))
+        text = speech_to_text("./videos/recorded_video.webm")
+        print(text)
+
+        ai_human = find_ai_human(text)
+        passed = "human" in ai_human
+        print(passed)
+
+        user_email = session.get("user").get("userinfo").get("email")
+        user = db.users_collection.find_one({"email": user_email})
+
+        if user is not None and user.get("is_admin", False):
+            # Update user's latest test result in the database
+            test = Test(is_completed=True, questions=[], has_passed=passed)
+            test.response.append(text)
+            user.tests.append(test)
+            db.users_collection.update_one(
+                {"email": user_email}, {"$set": {"tests": user.tests}}
+            )
+            return (
+                jsonify({"message": "Video and test result saved successfully."}),
+                200,
+            )
+        else:
+            return jsonify({"error": "User is not an admin or does not exist."}), 403
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":

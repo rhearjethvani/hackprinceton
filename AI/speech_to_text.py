@@ -6,7 +6,7 @@ load_dotenv()
 
 # SET FILE PATH
 # file_path = "New Recording.m4a"
-file_path="IMG_2680 2.MOV"
+file_path = "IMG_2680 2.MOV"
 
 
 def speech_to_text(file_path):
@@ -16,6 +16,7 @@ def speech_to_text(file_path):
     transcript = transcriber.transcribe(file_path, config=config)
     return transcript.text
 
-# print(speech_to_text(file_path))
+
+print(speech_to_text("../server/videos/recorded_video.webm"))
 # for result in transcript.auto_highlights.results:
 #     print(f"Highlight: {result.text}, Count: {result.count}, Rank: {result.rank}")
