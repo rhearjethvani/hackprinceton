@@ -108,45 +108,45 @@ def submit_video():
 #         return jsonify({"error": str(e)})
 
 
-# @qns_route.route("/add-question", methods=["POST", "GET"])
-# @requires_auth
-# @requires_admin
-# def create_qns():
-#     # Extracting email of the user from the session
-#     user_email = session.get("user").get("userinfo").get("email")
+@qns_route.route("/add-question", methods=["POST", "GET"])
+@requires_auth
+@requires_admin
+def create_qns():
+    # Extracting email of the user from the session
+    user_email = session.get("user").get("userinfo").get("email")
 
-#     if request.method == "POST":
-#         text = request.form.get("text")
-#         if not text:
-#             return jsonify({"error": "Invalid request. 'text' field is missing."}), 400
+    if request.method == "POST":
+        text = request.form.get("text")
+        if not text:
+            return jsonify({"error": "Invalid request. 'text' field is missing."}), 400
 
-#         # Generating education question from the provided text
-#         question = generate_education_questions(str(text))
-#         questions = [question]
+        # Generating education question from the provided text
+        question = generate_education_questions(str(text))
+        questions = [question]
 
-#         # Creating a dictionary representation of the Test object
-#         test_dict = {
-#             "is_completed": False,  # Assuming is_completed is set to False by default
-#             "questions": questions,
-#             "has_passed": False,  # Assuming has_passed is set to False by default
-#             "response": [],  # Assuming response is an empty list by default
-#         }
+        # Creating a dictionary representation of the Test object
+        test_dict = {
+            "is_completed": False,  # Assuming is_completed is set to False by default
+            "questions": questions,
+            "has_passed": False,  # Assuming has_passed is set to False by default
+            "response": [],  # Assuming response is an empty list by default
+        }
 
-#         # Updating user's document in the database
-#         result = db.users_collection.find_one({"email": user_email})
-#         if result:
-#             for person in result.get("people", []):
-#                 person_tests = person.get("tests", [])
-#                 person_tests.append(test_dict)
-#                 person["tests"] = person_tests
+        # Updating user's document in the database
+        result = db.users_collection.find_one({"email": user_email})
+        if result:
+            for person in result.get("people", []):
+                person_tests = person.get("tests", [])
+                person_tests.append(test_dict)
+                person["tests"] = person_tests
 
-#             db.users_collection.update_one(
-#                 {"email": user_email}, {"$set": {"people": result["people"]}}
-#             )
+            db.users_collection.update_one(
+                {"email": user_email}, {"$set": {"people": result["people"]}}
+            )
 
-#         return f"<h1>This is the education question portal. Question: {question}</h1>"
-#     else:
-#         return render_template("addquestion.html")
+        return f"<h1>This is the education question portal. Question: {question}</h1>"
+    else:
+        return render_template("addquestion.html")
 
 # # hiring manager
 # else:
