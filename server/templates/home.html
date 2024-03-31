@@ -53,8 +53,8 @@
     <header>
       <h1>Welcome to Hack</h1>
     </header>
-    <nav>
-      <div>
+     <nav>
+        <div>
             <a href="/">Home</a>
             {% if session %}
                 <a href="/profile" class="profile">{{ session.user.userinfo.given_name }}</a>
@@ -64,19 +64,18 @@
             {% if session %}
                 <a href="/logout">Logout</a>
                 {% if session.role == "admin" %}
-                
                     <a href="/add-user">Add User</a> <!-- Link to add user -->
+                    <a href="/add-question">Add Question</a> <!-- Link to add question -->
                 {% endif %}
             {% else %}
                 <a href="/login">Login</a>
             {% endif %}
         </div>
-      
     </nav>
         <div class="container">
         <h1>Welcome {% if session %}{{ session.user.userinfo.given_name }}{% else %}Guest{% endif %}!</h1>
         {% if session and session.role == "admin" %}
-            <h2>Number of People: {{ people|length }}</h2>
+            <h2>Number of People: {{ l }}</h2>
         {% endif %}
         <h3><pre>{{ session.role }}</pre></h3>
     </div>

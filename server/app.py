@@ -16,6 +16,8 @@ import db
 from routes.crud_user import user_bp
 from routes.crud_qns import qns_route
 from auth.auth import requires_auth,requires_admin
+import os
+from flask import Flask, render_template, request, redirect, url_for
 from routes.crud_user import create_user,get_users
 
 from AI import *
@@ -63,13 +65,18 @@ def dashboard():
 @app.route("/")
 def home():
     users=[]
-    # if "role" in session and session["role"] == "admin":
-    #     print(get_users())
+    if "role" in session and session["role"] == "admin":
+        user = db.users_collection.find_one(
+            {"email": session.get("user").get("userinfo").get("email")}
+        )
+        users=user.get("people",[])
 
     return render_template(
         "home.html",
         session=session,
-        # users=users,
+        users=users,
+        l=len(users)
+        ,
         pretty=json.dumps(session.get("user"), indent=4),
     )
 
@@ -108,6 +115,27 @@ def logout():
             quote_via=quote_plus,
         )
     )
+
+
+@app.route("/video")
+def index():
+    return render_template("indexCopy.html")
+
+UPLOAD_FOLDER = "uploads"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+
+@app.route("/upload", methods=["POST"])
+def upload_file():
+    if "file" not in request.files:
+        return redirect(request.url)
+    file = request.files["file"]
+    if file.filename == "":
+        return redirect(request.url)
+    if file:
+        filename = file.filename
+        file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        return redirect(url_for("index"))
 
 
 if __name__ == "__main__":
