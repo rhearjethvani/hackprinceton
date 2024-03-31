@@ -16,6 +16,7 @@ import db
 from routes.crud_user import user_bp
 from routes.crud_qns import qns_route
 from auth.auth import requires_auth,requires_admin
+from routes.crud_user import create_user,get_users
 
 from AI import *
 # ENV setup
@@ -61,9 +62,14 @@ def dashboard():
 
 @app.route("/")
 def home():
+    users=[]
+    # if "role" in session and session["role"] == "admin":
+    #     print(get_users())
+
     return render_template(
         "home.html",
-        session=session.get("user"),
+        session=session,
+        # users=users,
         pretty=json.dumps(session.get("user"), indent=4),
     )
 
@@ -71,10 +77,12 @@ def home():
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
     token = oauth.auth0.authorize_access_token()
-    print(token)
+    
     session["user"] = token
-    # print(token)
     session["role"]="admin"
+    print(session)
+
+    create_user()
     return redirect("/")
 
 

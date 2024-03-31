@@ -1,17 +1,86 @@
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title>Auth0 Example</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+      }
+
+      header {
+        background-color: #333;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+
+      nav {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        margin: 0 10px;
+      }
+
+      nav a:hover {
+        text-decoration: underline;
+      }
+
+      .container {
+        padding: 20px;
+      }
+
+      .profile {
+        color: #007bff;
+        font-weight: bold;
+      }
+    </style>
   </head>
   <body>
-    {% if session %}
-        <h1>Welcome {{session}}!</h1>
-        <p><a href="/logout">Logout</a></p>
-        <div><pre>{{pretty}}</pre></div>
-    {% else %}
-        <h1>Welcome Guest</h1>
-        <p><a href="/login">Login</a></p>
-    {% endif %}
+    <header>
+      <h1>Welcome to Hack</h1>
+    </header>
+    <nav>
+      <div>
+            <a href="/">Home</a>
+            {% if session %}
+                <a href="/profile" class="profile">{{ session.user.userinfo.given_name }}</a>
+            {% endif %}
+        </div>
+        <div>
+            {% if session %}
+                <a href="/logout">Logout</a>
+                {% if session.role == "admin" %}
+                
+                    <a href="/add-user">Add User</a> <!-- Link to add user -->
+                {% endif %}
+            {% else %}
+                <a href="/login">Login</a>
+            {% endif %}
+        </div>
+      
+    </nav>
+        <div class="container">
+        <h1>Welcome {% if session %}{{ session.user.userinfo.given_name }}{% else %}Guest{% endif %}!</h1>
+        {% if session and session.role == "admin" %}
+            <h2>Number of People: {{ people|length }}</h2>
+        {% endif %}
+        <h3><pre>{{ session.role }}</pre></h3>
+    </div>
+
+
   </body>
 </html>

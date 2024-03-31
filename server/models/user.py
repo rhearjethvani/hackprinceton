@@ -6,6 +6,7 @@ class User:
         self.password=password
         self.tests=[] #json of {test, value}
         self.people=[] # #for only admins
+        
 
         
 
