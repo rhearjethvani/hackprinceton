@@ -29,30 +29,33 @@ def create_user():
     email = user_data.get("email")
     password = user_data.get("email")
     is_admin = True # manual stuff for now
+    search_email=db.users_collection.find_one(email)
+    if not search_email:
 
-    # Create a User object
-    user_obj = User(username, is_admin, email, password)
+        # Create a User object
+        user_obj = User(username, is_admin, email, password)
 
-    # Insert the user object into MongoDB
-    result = db.users_collection.insert_one(
-        {
-            "username": user_obj.username,
-            "email": user_obj.email,
-            "password": user_obj.password,
-            "is_admin": user_obj.is_admin,
-        }
-    )
-
-    # Check if the insertion was successful
-    if result.inserted_id:
-        return (
-            jsonify(
-                {
-                    "message": "User created successfully",
-                    "user_id": str(result.inserted_id),
-                }
-            ),
-            201,
+        # Insert the user object into MongoDB
+        result = db.users_collection.insert_one(
+            {
+                "username": user_obj.username,
+                "email": user_obj.email,
+                "password": user_obj.password,
+                "is_admin": user_obj.is_admin,
+            }
         )
-    else:
-        return jsonify({"error": "Failed to create user"}), 500
+
+        # Check if the insertion was successful
+        if result.inserted_id:
+            return (
+                jsonify(
+                    {
+                        "message": "User created successfully",
+                        "user_id": str(result.inserted_id),
+                    }
+                ),
+                201,
+            )
+        else:
+            return jsonify({"error": "Failed to create user"}), 500
+    return jsonify({"message":"User already Exists"})
