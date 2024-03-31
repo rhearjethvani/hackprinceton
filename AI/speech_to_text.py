@@ -16,6 +16,6 @@ def speech_to_text(file_path):
     transcript = transcriber.transcribe(file_path, config=config)
     return transcript.text
 
-print(speech_to_text(file_path))
+# print(speech_to_text(file_path))
 # for result in transcript.auto_highlights.results:
 #     print(f"Highlight: {result.text}, Count: {result.count}, Rank: {result.rank}")

@@ -56,7 +56,7 @@ def generate_job_questions(questions,number):
     return qns
 
 
-def generate_education_questions(content, number):
+def generate_education_questions(content):
     # Prompt for generating questions for verbal answers
     completion_verbal = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -70,7 +70,7 @@ def generate_education_questions(content, number):
     qns_verbal = completion_verbal.choices[0].message.content
     return qns_verbal
 
-print(generate_job_questions(questions, 2))
+# print(generate_job_questions(questions, 2))
 # print(
 #     generate_education_questions(
 #         """Princeton University, located in Princeton, New Jersey, is one of the oldest and most prestigious universities in the United States. Founded in 1746 as the College of New Jersey, it was later renamed Princeton University in 1896. Princeton is renowned for its commitment to excellence in teaching and research across a wide range of disciplines.

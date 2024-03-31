@@ -15,16 +15,17 @@ def get_users():
 
 # if the user is not in the database
 @user_bp.route("/create", methods=["POST"])
-@requires_auth
+# @requires_auth
 def create_user():
     user_data = request.json
+    print(user_data)
     username = user_data.get("username")
     email = user_data.get("email")
     password = user_data.get("password")
-    is_admin = True if user_data.get("is_admin")=="true" else False
+    is_admin = True if user_data.get("is_admin")=="True" else False
 
     # Create a User object
-    user_obj = User(username, email, password, is_admin)
+    user_obj = User(username, is_admin , email, password)
 
     # Insert the user object into MongoDB
     result = db.users_collection.insert_one(

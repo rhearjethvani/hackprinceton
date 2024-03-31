@@ -17,6 +17,7 @@ from routes.crud_user import user_bp
 from routes.crud_qns import qns_route
 from auth.auth import requires_auth,requires_admin
 
+from AI import *
 # ENV setup
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -45,7 +46,7 @@ app.register_blueprint(user_bp)
 app.register_blueprint(qns_route)
 
 
-#test admin/auth routes
+# test admin/auth routes
 @app.route("/dashboard")
 @requires_auth
 @requires_admin
@@ -71,7 +72,7 @@ def home():
 def callback():
     token = oauth.auth0.authorize_access_token()
     session["user"] = token
-    print(token)
+    # print(token)
     session["role"]="admin"
     return redirect("/")
 
